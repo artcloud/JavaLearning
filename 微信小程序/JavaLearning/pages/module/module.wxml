@@ -1,0 +1,46 @@
+<!--pages/module/module.wxml-->
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+    <view class="page__hd" style="height:50%;">
+    </view>
+    <view class="page__bd page__bd_spacing">
+        <view class="kind-list">
+            <block wx:for-items="{{list}}" wx:key="id">
+                <view class="kind-list__item">
+                    <view id="{{item.id}}" class="weui-flex kind-list__item-hd {{item.open ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+                        <view class="weui-flex__item">{{item.name}}</view>
+                        <image aria-role="button" aria-label="{{item.open ? ' 收起' : ' 展开'}}" class="kind-list__img" src="../images/icon_nav_feedback.png" wx:if="{{item.ksIfLearnt}}"></image>
+                    </view>
+                    <view aria-hidden="{{item.open ? 'false' : 'true'}}" class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}">
+                        <view class="weui-cells {{item.open ? 'weui-cells_show' : ''}}">
+                            <block wx:for="{{item.kpnames}}" wx:for-item="kpnames" wx:key="*this">
+                                <navigator aria-role="menuitem" url="../knowledgePoint/knowledgePoint?moduleID={{moduleID}}&ksID={{item.id}}&kpID={{item.kpids[index]}}&mode=learningByModule" class="weui-cell weui-cell_access" style="color:{{item.kpIDsLearnt[index]=='true'?'lightgreen':'black'}}" hover-class="weui-cell_active">
+                                    <view class="weui-cell__bd">{{kpnames}}</view>
+                                    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                                </navigator>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <view class="kind-list">
+            <view class="kind-list__item">
+                <view class="weui-flex kind-list__item-hd" bindtap="checkKPsIfLearnt" url="">
+                    <view class="weui-cell__bd" style="color:red">本章测试</view>
+                    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view aria-role="dialog" aria-modal="true" class="fadeIn" wx:if="{{exerciseLockedWarning}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+        <view class="weui-dialog__hd"><strong class="weui-dialog__title"></strong></view>
+        <view class="weui-dialog__bd">尚未完成本章所有知识点的学习，确定立即进入测验？</view>
+        <view class="weui-dialog__ft">
+            <view aria-role="button" class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeExerciseLockedWarning">去学习</view>
+            <view aria-role="button" class="weui-dialog__btn weui-dialog__btn_primary" bindtap="gotoExercise">进入测验</view>
+        </view>
+    </view>
+</view>

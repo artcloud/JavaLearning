@@ -1,0 +1,15 @@
+<!--pages/exerciseAfterSubmit/exerciseAfterSubmit.wxml-->
+<view class="weui-msg">
+    <view class="weui-msg__icon-area" wx:if="{{score>=90}}"><text class="weui-icon-success weui-icon_msg"></text></view>
+    <view class="weui-msg__text-area">
+        <view class="weui-msg__title">提交成功</view>
+        <view class="weui-msg__title">分数为：{{score}}</view>
+        <view class="weui-msg__desc">{{score>=90?"恭喜您通过本章测验！可进入后续章节学习":"很遗憾您未能通过本章测验，请继续努力！"}}<navigator class="weui-wa-hotarea weui-link" url="../exerciseReview/exerciseReview?timeSubmit={{timeSubmit}}" style="background-color:white;position:relative;top:30rpx">测验回顾</navigator></view>
+    </view>
+    <view class="weui-msg__opr-area">
+        <view class="weui-btn-area">
+            <view class="weui-btn weui-btn_primary" aria-role="button" bindtap="gotoLearning"  open-type="redirectTo" wx:if="{{score>=90}}">进入下一章</view>
+            <navigator class="weui-btn weui-btn_primary" aria-role="button" url="../module/module?moduleID={{moduleID}}" open-type="redirectTo">返回</navigator>
+        </view>
+    </view>
+</view>

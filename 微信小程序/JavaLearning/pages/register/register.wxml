@@ -1,0 +1,47 @@
+<view class="weui-form">
+    <view class="weui-form__control-area">
+        <view class="weui-cells__group weui-cells__group_form weui-cells__group_form-primary">
+            <view class="weui-cells">
+                <view class="weui-cell weui-cell_active">
+                    <view class="weui-cell__hd"><label class="weui-label">用户名</label></view>
+                    <view class="weui-cell__bd">
+                        <input class="weui-input" placeholder="填写用户名" placeholder-class="weui-input__placeholder" bindinput="student_IDInput"></input>
+                    </view>
+                </view>
+                <view class="weui-cell weui-cell_active">
+                    <view class="weui-cell__hd">
+                        <label class="weui-label">密码</label>
+                    </view>
+                    <view class="weui-cell__bd">
+                        <input class="weui-input" placeholder="填写密码" type="password" placeholder-class="weui-input__placeholder" bindinput="passwordInput"></input>
+                    </view>
+                </view>
+                <view class="weui-cell weui-cell_active">
+                    <view class="weui-cell__hd">
+                        <label class="weui-label">确认密码</label>
+                    </view>
+                    <view class="weui-cell__bd">
+                        <input class="weui-input" placeholder="填写密码" type="password" placeholder-class="weui-input__placeholder" bindinput="passwordConfirmInput"></input>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <button class="weui-btn weui-btn_primary" aria-role="button" bindtap="register" style="top:300rpx">注册</button>
+    </view>
+</view>
+
+<view aria-role="alert" class="fadeIn {{hideRegisterSuccessToast ? 'fadeOut' : ''}}" wx:if="{{registerSuccessToast}}">
+    <view class="weui-mask_transparent"></view>
+    <view class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <view class="weui-toast__content">注册成功</view>
+    </view>
+</view>
+
+<view aria-role="alert" class="fadeIn {{hideRegisterFailToast ? 'fadeOut' : ''}}" wx:if="{{registerFailToast}}">
+    <view class="weui-mask_transparent"></view>
+    <view class="weui-toast">
+		<i class="weui-icon-warn weui-icon_toast"></i>
+        <view class="weui-toast__content">{{failureMessage}}</view>
+    </view>
+</view>

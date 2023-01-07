@@ -1,0 +1,31 @@
+<view id="total">
+<form bindsubmit="create_login">
+<view id="t1">
+<text>账号</text><input type="text" name="student_ID" id="use" placeholder="输入您的账号" bindinput="student_IDInput"></input>
+</view>
+<view id="t2">
+<text>密码</text><input type="password" name="password" id="pass1" placeholder="输入您的密码" bindinput="passwordInput"></input>
+</view>
+<button class="weui-btn weui-btn_primary" aria-role="button" form-type="submit" style="top:350rpx">登录</button>
+</form>
+
+<view class="button-sp-area">
+    <navigator class="weui-btn weui-btn_mini weui-btn_default weui-wa-hotarea" aria-role="button" url="../register/register" style="top:500rpx;left:320rpx">注册</navigator>
+</view>
+</view>
+
+<view aria-role="alert" class="fadeIn {{hideLoginSuccessToast ? 'fadeOut' : ''}}" wx:if="{{loginSuccessToast}}">
+    <view class="weui-mask_transparent"></view>
+    <view class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <view class="weui-toast__content">登录成功</view>
+    </view>
+</view>
+
+<view aria-role="alert" class="fadeIn {{hideLoginFailToast ? 'fadeOut' : ''}}" wx:if="{{loginFailToast}}">
+    <view class="weui-mask_transparent"></view>
+    <view class="weui-toast">
+		<i class="weui-icon-warn weui-icon_toast"></i>
+        <view class="weui-toast__content">{{failureMessage}}</view>
+    </view>
+</view>

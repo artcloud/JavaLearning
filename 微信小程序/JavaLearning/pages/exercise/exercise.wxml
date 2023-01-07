@@ -1,0 +1,93 @@
+<!--pages/exercise/exercise.wxml-->
+<view class='demo-text2'>
+    <text>倒计时：{{countdown}}</text>
+</view>
+<view style="height:100%;">
+	<view class="weui-bottom-fixed-opr-page  {{wrap ? 'weui-bottom-fixed-opr-page_btn-wrap' : ''}}" >
+        <view class="weui-article__h2">{{exerciseNum+1}}.</view>
+        <view class="weui-article__h4">{{stem}}</view>
+        <view class="weui-form__control-area" wx:if="{{eType=='choice'||eType=='judgment'}}">
+            <view class="weui-cells__group weui-cells__group_form">
+                <view class="weui-cells weui-cells_radio">
+                    <radio-group class="radio-group" bindchange="radioChange">
+                        <label class="weui-cell weui-cell_active weui-check__label" wx:for="{{radioList}}" wx:key="name">
+                            <view class="weui-cell__bd">
+                                <view>{{item.optionText}}</view>
+                            </view>
+                            <view class="weui-cell__ft">
+                                <radio
+                                    class="weui-check"
+                                    value="{{item.optionName}}"
+                                    checked="{{item.checked}}"
+                                />
+                                <i class="weui-icon-checked"></i>
+                            </view>
+                        </label>
+                    </radio-group>
+                </view>
+            </view>
+        </view>
+        <view class="weui-form__control-area" wx:if="{{eType=='blank'}}">
+            <view class="weui-cells__group weui-cells__group_form">
+                <view wx:for="{{blankList}}" wx:key="name">
+                    <view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd"><label class="weui-label">{{item.blankNum+1}}</label></view>
+						<view class="weui-cell__bd weui-flex">
+							<input
+                                class="weui-input"
+                                type="text"
+                                placeholder="请输入"
+                                placeholder-class="weui-input__placeholder"
+                                value="{{blankValues[index]}}"
+                                bindinput="onInput"
+                                data-num="{{item.blankNum}}"
+                            />
+                            <view wx:if="{{showClearBtn[item.blankNum]}}" aria-role="button" class="weui-btn_reset weui-btn_icon weui-btn_input-clear" data-num="{{item.blankNum}}" bindtap="onClear">
+								<i class="weui-icon-clear"></i>
+							</view>
+						</view>
+					</view>
+                </view>
+            </view>
+        </view>
+        <view class="weui-bottom-fixed-opr" id="js_opr">
+            <view class="weui-btn weui-btn_default" aria-role="button" bindtap="changeExerciseNum" wx:if="{{exerciseNum>0}}" data-num="{{exerciseNum-1}}" >上一题</view>
+            <view class="weui-btn weui-btn_default" aria-role="button" bindtap="changeExerciseNum" wx:if="{{exerciseNum<exerciseCount-1}}" data-num="{{exerciseNum+1}}">下一题</view>
+            <view class="weui-btn weui-btn_default" aria-role="button" style="color:red" bindtap="submitModuleExercisesConfirm" wx:if="{{exerciseNum==exerciseCount-1}}">交卷</view>
+        </view>
+    </view>
+</view>
+
+<view aria-role="dialog" aria-modal="true" aria-labelledby="js_dialog1_title">
+    <view class="weui-mask weui-transition {{exerciseNavigator ? 'weui-transition_show' : ''}}" bindtap="exerciseNavigatorClose"></view>
+    <view class="weui-half-screen-dialog weui-transition {{exerciseNavigator ? 'weui-transition_show' : ''}}">
+        <view class="weui-half-screen-dialog__hd">
+            <view class="weui-half-screen-dialog__hd__side" bindtap="exerciseNavigatorClose">
+                <view aria-role="button" class="weui-icon-btn">关闭<i class="weui-icon-close-thin"></i></view>
+            </view>
+            <view class="weui-half-screen-dialog__hd__main">
+                <strong class="weui-half-screen-dialog__title" id="js_dialog1_title">切换题目</strong>
+            </view>
+        </view>
+        <view class="weui-half-screen-dialog__bd" style="padding-top: 32px; height: 50px;">
+            <view wx:for="{{rowList}}" wx:key="*this" style="display:flex">
+                <view wx:for="{{item.names}}" wx:for-item="names" wx:key="names" style="display:flex">
+                    <view class="weui-btn weui-btn_default" aria-role="button" bindtap="changeExerciseNum" data-num="{{index}}" style="width:50%;color:{{exerciseDone[index]?'green':'red'}};background-color:{{index==exerciseNum?'lightblue':'None'}}">{{item.names[index]}}</view>
+                </view>
+            </view>
+        </view>
+        <view class="weui-btn weui-btn_default" aria-role="button" bindtap="submitModuleExercisesConfirm" style="float:left">交卷</view>
+    </view>
+</view>
+
+<view aria-role="dialog" aria-modal="true" class="fadeIn" wx:if="{{submitConfirm}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+        <view class="weui-dialog__hd"><strong class="weui-dialog__title">提示</strong></view>
+        <view class="weui-dialog__bd">{{allExercisesDone?"您已完成所有题目，是否确定提交？":"您有未完成的题目，是否确定提交？"}}</view>
+        <view class="weui-dialog__ft">
+            <view aria-role="button" class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeSubmitModuleExercisesConfirm">{{allExercisesDone?"继续检查":"继续完成"}}</view>
+            <view aria-role="button" class="weui-dialog__btn weui-dialog__btn_primary" bindtap="submitModuleExercises">确定提交</view>
+        </view>
+    </view>
+</view>

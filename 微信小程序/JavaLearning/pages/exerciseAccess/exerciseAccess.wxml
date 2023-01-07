@@ -1,0 +1,16 @@
+<!--pages/exerciseAccess/exerciseAccess.wxml-->
+<page-meta root-font-size="system"/>
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+	<view class="weui-msg">
+		<view class="weui-msg__text-area">
+			<view class="weui-msg__title">{{moduleName}}</view>
+			<view class="weui-msg__title">练习题</view>
+			<view class="weui-msg__desc">分数达到90即可解锁后续章节</view>
+		</view>
+		<view class="weui-msg__opr-area">
+			<view class="weui-btn-area">
+				<view class="weui-btn weui-btn_primary" aria-role="button" bindtap="generateExercises">开始测验</view>
+			</view>
+		</view>
+	</view>
+</view>

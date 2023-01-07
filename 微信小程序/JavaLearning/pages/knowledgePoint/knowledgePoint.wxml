@@ -1,0 +1,24 @@
+<!--pages/knowledgePoint/knowledgePoint.wxml-->
+
+<view style="height:100%;">
+    <view class="weui-bottom-fixed-opr-page  {{wrap ? 'weui-bottom-fixed-opr-page_btn-wrap' : ''}}">
+        <view class="weui-bottom-fixed-opr-page__content">
+            <view aria-role="heading" aria-level="4" class="weui-article__h1 weui-bottom-fixed-opr-demo" >{{kpName}}</view>
+            <view class="weui-article__p weui-bottom-fixed-opr-demo" style="white-space: pre-wrap;" decode="true">{{kpContent}}</view>
+        </view>
+        <view class="weui-bottom-fixed-opr" id="js_opr">
+            <view class="weui-btn weui-btn_default" aria-role="button" bindtap="prevKP" wx:if="{{mode=='learningByModule'&&hasprev}}">上一节</view>
+            <view class="weui-btn weui-btn_default" aria-role="button" style="color:blue" bindtap="finishLearningKP" wx:if="{{!kpIfLearnt}}">完成学习</view>
+            <view class="weui-btn weui-btn_default" aria-role="button" bindtap="nextKP" wx:if="{{mode=='learningByModule'&&hasnext}}">下一节</view>
+            <view class="weui-btn weui-btn_default" aria-role="button" bindtap="anotherOne" wx:if="{{mode=='learningByRecommend'}}">换一个</view>
+        </view>
+    </view>
+</view>
+
+<view aria-role="alert" class="fadeIn {{hideFinishLearningKPToast ? 'fadeOut' : ''}}" wx:if="{{finishLearningKPToast}}">
+    <view class="weui-mask_transparent"></view>
+    <view class="weui-toast">
+        <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+        <view class="weui-toast__content">已完成</view>
+    </view>
+</view>

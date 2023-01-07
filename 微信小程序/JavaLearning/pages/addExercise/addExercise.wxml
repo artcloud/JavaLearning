@@ -1,0 +1,106 @@
+<!--pages/addExercise/addExercise.wxml-->
+<page-meta root-font-size="system"/>
+
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+    <view class="page__hd">
+        <view class="page__title">添加习题</view>
+        <view class="page__desc">添加习题</view>
+    </view>
+    <view class="page__bd">
+
+        <view class="weui-cells weui-cells_after-title">
+            <picker bindchange="bindModulePickerChange" value="{{index}}" range="{{moduleNames}}">
+                <view aria-role=""  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                    <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">章节</view>
+                    <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true">{{selectedModuleName}}</view>
+                </view>
+            </picker>
+            
+            <picker bindchange="bindKSPickerChange" value="{{index}}" range="{{ksNames}}">
+                <view aria-role=""  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                    <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">知识块</view>
+                    <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true">{{selectedKSName}}</view>
+                </view>
+            </picker>
+
+            <picker bindchange="bindKPPickerChange" value="{{index}}" range="{{ksAndKPList[selectedKSIDIndex].kpNames}}">
+                <view aria-role=""  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                    <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">知识点</view>
+                    <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true">{{selectedKPName}}</view>
+                </view>
+            </picker>
+
+            <picker bindchange="bindExerciseTypePickerChange" value="{{index}}" range="{{exerciseTypes}}">
+                <view aria-role=""  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                    <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">习题类型</view>
+                    <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true">{{selectedExerciseType}}</view>
+                </view>
+            </picker>
+
+            <view class="weui-cells__group weui-cells__group_form">
+                <view class="weui-cells__title">题干</view>
+                <view class="weui-cells weui-cells_form">
+                    <view class="weui-cell" hover-class="weui-cell_active">
+                        <view class="weui-cell__bd">
+                            <textarea class="weui-textarea" placeholder="请输入题目描述" placeholder-class="weui-input__placeholder" rows="3" bindinput="stemInput"></textarea>
+                            <view aria-role="choiceOption" class="weui-textarea-counter"><span>{{stemVal.length}}</span>/200</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+            <view wx:if="{{selectedExerciseType=='选择题'}}">
+                <picker bindchange="bindOptionCountPickerChange" value="{{index}}" range="{{choiceOptionCounts}}">
+                    <view aria-role=""  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                        <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">选项数量</view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true">{{selectedOptionCount}}</view>
+                    </view>
+                </picker>
+                <picker bindchange="bindChoiceKeyPickerChange" value="{{index}}" range="{{choiceOptionKeyCounts}}">
+                    <view aria-role=""  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                        <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">正确选项</view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true">{{selectedChoiceKey}}</view>
+                    </view>
+                </picker>
+                <view aria-role=""  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                    <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">选项内容</view>
+                </view>
+                <view wx:for="{{choiceOptionContents}}" wx:key="*this">
+                    <view class="weui-cells__group weui-cells__group_form">
+                        <view class="weui-cells__title">选项{{index+1}}</view>
+                        <view class="weui-cells weui-cells_form">
+                            <view class="weui-cell" hover-class="weui-cell_active">
+                                <view class="weui-cell__bd">
+                                    <textarea class="weui-textarea" placeholder="请输入选项内容" placeholder-class="weui-input__placeholder" rows="3" bindinput="choiceOptionContentsInput" data-num="{{index}}"></textarea>
+                                    <view aria-role="choiceOption" class="weui-textarea-counter"><span>{{choiceOptionContentsBuffer[index]==null?0:choiceOptionContentsBuffer[index].length}}</span>/200</view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view wx:if="{{selectedExerciseType=='判断题'}}">
+                <picker bindchange="bindJudgmentKeyPickerChange" value="{{index}}" range="{{judgmentOptionKeys}}">
+                    <view aria-role=""  class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                        <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">正确选项</view>
+                        <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true">{{selectedJudgmentKey}}</view>
+                    </view>
+                </picker>
+            </view>
+
+            <view class="weui-btn weui-btn_primary" aria-role="button" bindtap="addExercise">添加</view>
+        </view>  
+    </view>
+</view>
+<view aria-role="dialog" aria-modal="true" class="fadeIn" wx:if="{{addExerciseConfirm}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+        <view class="weui-dialog__hd"><strong class="weui-dialog__title">确定添加习题</strong></view>
+        <view class="weui-dialog__ft">
+            <view aria-role="button" class="weui-dialog__btn weui-dialog__btn_default" bindtap="cancelAddExercise">取消</view>
+            <view aria-role="button" class="weui-dialog__btn weui-dialog__btn_primary" bindtap="addExercise">确定</view>
+        </view>
+    </view>
+</view>
+
+

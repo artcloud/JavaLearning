@@ -1,0 +1,33 @@
+<!--pages/moduleList/moduleList.wxml-->
+<view class="weui-cells weui-cells_after-title">
+    <view wx:for="{{finishedModuleNameList}}" wx:key="*this">
+        <navigator aria-role="" url="../module/module?moduleID={{finishedModuleIDList[index]}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">{{item}}</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true" style="color:lightgreen">已完成</view>
+        </navigator>
+    </view>
+    <view wx:for="{{unfinishedModuleNameList}}" wx:key="*this">
+        <navigator aria-role="" url="../module/module?moduleID={{unfinishedModuleIDList[index]}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view aria-role="link" aria-labelledby="js_cell_tl1_bd js_cell_tl1_ft" id="js_cell_tl1_bd" class="weui-cell__bd">{{item}}</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access" id="js_cell_tl1_ft" aria-hidden="true">待学习</view>
+        </navigator>
+    </view>
+    <view wx:for="{{lockedModuleNameList}}" wx:key="*this">
+        <view aria-role=""  bindtap="lockedWarning" class="weui-cell weui-cell_access" hover-class="weui-cell_active" data-num="{{lockedmoduleIDList[index]}}">
+            <view aria-role="link" aria-labelledby="js_cell_tl2_bd js_cell_tl2_ft" id="js_cell_tl2_bd" class="weui-cell__bd">{{item}}</view>
+            <view id="js_cell_tl2_ft" aria-hidden="true" class="weui-cell__ft weui-cell__ft_in-access" style="color:red">未解锁</view>
+        </view>
+    </view>
+</view>
+<button bindtap="goback">返回</button>
+
+<view aria-role="dialog" aria-modal="true" class="fadeIn" wx:if="{{moduleLockedWarning}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+        <view class="weui-dialog__hd"><strong class="weui-dialog__title">尚未解锁！</strong></view>
+        <view class="weui-dialog__bd">请先学习{{warnName}}</view>
+        <view class="weui-dialog__ft">
+            <view aria-role="button" class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeModuleLockedWarning">去学习</view>
+        </view>
+    </view>
+</view>

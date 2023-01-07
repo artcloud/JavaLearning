@@ -1,0 +1,6 @@
+<!--pages/admin_homepage/admin_homepage.wxml-->
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+<view class="button-sp-area cell">
+	<navigator class="weui-btn_cell weui-btn_cell-default" aria-role="button" url="../addExercise/addExercise">添加习题</navigator>
+</view>
+</view>

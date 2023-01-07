@@ -1,0 +1,101 @@
+<!--pages/exerciseReview/exerciseReview.wxml-->
+<view class="page__hd">
+    <view class="page__title">做题记录</view>
+    <view class="page__desc">类型：{{esType=="moduleExercise"?"单元测验":"期末考试"}}</view>
+    <view class="page__desc" wx:if="{{esType=='moduleExercise'}}">章节：{{moduleName}}</view>
+    <view class="page__desc">提交时间：{{timeSubmit}}</view>
+    <view class="page__desc">用时：{{totalTimeUsed}}</view>
+    <view class="page__desc">成绩：{{score}}</view>
+</view>
+<view class="page__bd">
+    <view class="weui-panel weui-panel_access">
+        <view class="weui-panel__hd">选择题</view>
+        <view class="weui-panel__bd">
+            <view wx:for="{{choiceExerciseList}}" wx:key="id">
+                <view class="weui-media-box weui-media-box_text" aria-role="option">
+                    <view style="float:right">{{item.answer==item.key?"✔":"✘"}}</view>
+                    <text class="weui-media-box__title">{{item.id}}.{{item.stem}}</text>
+                    <view wx:for="{{item.optionContent}}" wx:for-item="optionContent" wx:key="id">
+                        <view>
+                            <view  style="background-color:{{item.optionID[index]==item.key?'lightgreen':(item.optionID[index]==item.answer?'orangered':'white')}};color:rgb(74, 83, 94)">{{optionContent}}</view>
+                        </view>
+                    </view>
+                    <view>用时：{{item.timeUsed}}    得分：{{item.score}}</view>
+                    <view class="weui-wa-hotarea weui-link" bindtap="openRelatedKPsDialog" data-eid="{{item.eID}}" style="background-color:white;position:relative;top:30rpx">相关知识点</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="weui-panel weui-panel_access">
+        <view class="weui-panel__hd">判断题</view>
+        <view class="weui-panel__bd">
+            <view wx:for="{{judgmentExerciseList}}" wx:key="id">
+                <view class="weui-media-box weui-media-box_text" aria-role="option">
+                    <view style="float:right">{{item.answer==item.key?"✔":"✘"}}</view>
+                    <text class="weui-media-box__title">{{item.id}}.{{item.stem}}</text>
+                    <view>
+                        <view  style="background-color:{{item.key=='1'?'lightgreen':(item.answer=='1'?'orangered':'white')}};color:rgb(74, 83, 94)">true</view>
+                        <view  style="background-color:{{item.key=='0'?'lightgreen':(item.answer=='0'?'orangered':'white')}};color:rgb(74, 83, 94)">false</view>
+                    </view>
+                    <view>用时：{{item.timeUsed}}    得分：{{item.score}}</view>
+                    <view class="weui-wa-hotarea weui-link" bindtap="openRelatedKPsDialog" data-eid="{{item.eID}}" style="background-color:white;position:relative;top:30rpx">相关知识点</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="weui-panel weui-panel_access">
+        <view class="weui-panel__hd">填空题</view>
+        <view class="weui-panel__bd">
+            <view wx:for="{{blankExerciseList}}" wx:key="id">
+                <view class="weui-media-box weui-media-box_text" aria-role="option">
+                    <text class="weui-media-box__title">{{item.id}}.{{item.stem}}</text>
+                    <view>
+                        <view wx:for="{{item.blankKey}}" wx:for-item="blankKey" wx:key="id">
+                            <view style="float:right">{{item.blankAnswer[index]==blankKey?"✔":"✘"}}</view>
+                            <view  style="background-color:{{}};color:rgb(74, 83, 94)">{{index}}</view>
+                            <view  style="background-color:{{item.blankAnswer[index]==blankKey?'lightgreen':'orangered'}};color:rgb(74, 83, 94)">{{item.blankAnswer[index]}}</view>
+                            <view  style="background-color:{{}};color:rgb(74, 83, 94)" wx:if="{{item.blankAnswer[index]!=blankKey}}">正确答案：{{blankKey}}</view>
+                        </view>
+                    </view>
+                    <view>用时：{{item.timeUsed}}    得分：{{item.score}}</view>
+                    <view class="weui-wa-hotarea weui-link" bindtap="openRelatedKPsDialog" data-eid="{{item.eID}}" style="background-color:white;position:relative;top:30rpx">相关知识点</view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view wx:if="{{showRelatedKPsDialog}}" aria-role="dialog" aria-modal="true" aria-labelledby="js_dialog_title" class="fadeIn" >
+    <view class="weui-mask" aria-role="button" aria-label="关闭" bindtap="closeRelatedKPsDialog"></view>
+    <view class="weui-actionsheet weui-actionsheet_toggle">
+        <view class="weui-actionsheet__title">
+            <view class="weui-actionsheet__title-text" id="js_dialog_title">相关知识点</view>
+        </view>
+        <view class="weui-actionsheet__menu">
+            <view wx:for="{{kpList}}" wx:key="id"> 
+                <view aria-role="button" bindtap="openKPDialog" data-moduleid="{{item.moduleID}}" data-ksid="{{item.ksID}}" data-kpid="{{item.kpID}}" class="weui-actionsheet__cell" style="font-weight:{{index==0?'bold':'normal'}}">{{item.kpName}}</view>
+            </view>
+        </view>
+        <view class="weui-actionsheet__action">
+            <view aria-role="button" bindtap="closeRelatedKPsDialog" class="weui-actionsheet__cell">返回</view>
+        </view>
+    </view>
+</view>
+<view aria-role="dialog" aria-modal="true">
+    <view class="weui-mask weui-transition {{showKPDialog ? 'weui-transition_show' : ''}}" bindtap="closeKPDialog" aria-role="button" aria-label="关闭"></view>
+    <view class="weui-half-screen-dialog weui-half-screen-dialog_large weui-transition {{showKPDialog ? 'weui-transition_show' : ''}}">
+        <view class="weui-half-screen-dialog__hd">
+            <view class="weui-half-screen-dialog__hd__side" bindtap="closeKPDialog">
+                <view aria-role="button" class="weui-icon-btn">关闭<i class="weui-icon-close-thin"></i></view>
+            </view>
+            <view class="weui-half-screen-dialog__hd__main">
+                <strong class="weui-half-screen-dialog__title">{{kpName}}</strong>
+            </view>
+        </view>
+        <view class="weui-half-screen-dialog__bd weui-article__p" style="padding-top: 32px; height: 50px;white-space: pre-wrap;" decode="true">{{kpContent}}</view>
+        <view class="weui-half-screen-dialog__ft">
+            <view class="weui-half-screen-dialog__btn-area">
+            <view aria-role="button" class="weui-btn weui-btn_primary" bindtap="closeKPDialog">返回</view>
+            </view>
+        </view>
+    </view>
+</view>

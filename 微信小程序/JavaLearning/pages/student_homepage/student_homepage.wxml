@@ -1,0 +1,6 @@
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+    <view class="button-sp-area cell">
+        <view class="weui-btn_cell weui-btn_cell-default" aria-role="button" bindtap="gotoModuleList">按章节学习</view>
+        <view class="weui-btn_cell weui-btn_cell-default" aria-role="button" bindtap="gotoRecommendLearning">推荐学习</view>
+    </view>
+</view>

@@ -1,0 +1,43 @@
+<!--pages/completedRecordReview/completedRecordReview.wxml-->
+<wxs module="indexofStr">
+	module.exports.includes = function (str, str_) {
+		return str.indexOf(str_);
+	}
+</wxs>
+
+<view class="weui-search-bar {{searchInputShowed ? 'weui-search-bar_focusing' : ''}}" id="searchBar">
+    <form class="weui-search-bar__form"
+aria-role="combobox"
+aria-haspopup="true"
+aria-expanded="{{searchInputVal.length > 0 ? 'true' : 'false'}}"
+aria-owns="searchResult"
+>
+<view class="weui-search-bar__box">
+    <i class="weui-icon-search"></i>
+    <input aria-controls="searchResult" type="text" class="weui-search-bar__input" placeholder="搜索" value="{{searchInputVal}}" focus="{{searchInputShowed}}" bindinput="searchInputTyping"
+
+    />
+    <view aria-role="button" aria-label="清除" class="weui-icon-clear" wx:if="{{searchInputVal.length > 0}}" bindtap="clearSearchInput"></view>
+</view>
+<label class="weui-search-bar__label" bindtap="showSearchInput">
+    <i class="weui-icon-search"></i>
+    <span class="weui-search-bar__text">搜索</span>
+</label>
+    </form>
+<view aria-role="button" class="weui-search-bar__cancel-btn" bindtap="hideSearchInput">取消</view>
+</view>
+<view class="weui-cells weui-cells_after-title">
+    <view wx:for="{{completedExerciseSetList}}" wx:key="id">
+        <navigator aria-labelledby="js_cell_l1_bd" url="../exerciseReview/exerciseReview?timeSubmit={{item.timeSubmit}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:if="{{indexofStr.includes(item.moduleName,searchInputVal)>-1||indexofStr.includes(item.esType,searchInputVal)>-1||indexofStr.includes(item.timeSubmitToDate,searchInputVal)>-1||indexofStr.includes(item.score,searchInputVal)>-1 }}">
+            <view class="weui-cell__bd" id="js_cell_l1_bd" aria-hidden="true">
+                <view>{{index+1}}</view>
+                <view>{{item.moduleName}}</view>
+                <view class="weui-cell__desc" style="color:lightslategrey">类型：{{item.esType=="moduleExercise"?"单元测验":"期末考试"}}</view>
+                <view class="weui-cell__desc" style="color:lightslategrey">提交时间：{{item.timeSubmit}}</view>
+                <view class="weui-cell__desc" style="color:lightslategrey">用时：{{item.totalTimeUsed}}</view>
+                <p class="weui-cell__desc" style="color:lightslategrey">成绩：</p><p class="weui-cell__desc" style="color:{{item.score>=90?'lightgreen':'red'}}">{{item.score}}</p>
+            </view>
+            <view class="weui-cell__ft weui-cell__ft_in-access" aria-hidden="true"></view>
+        </navigator>
+    </view>
+</view>

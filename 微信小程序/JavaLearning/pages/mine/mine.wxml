@@ -1,0 +1,83 @@
+<!--pages/mine/mine.wxml-->
+
+<view class="weui-cells__title">学习数据</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell" aria-role="option">
+        <view class="weui-cell__bd">
+            已完成章节数
+        </view>
+        <view class="weui-cell__ft">{{countFinishedModule}}</view>
+    </view>
+</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell" aria-role="option">
+        <view class="weui-cell__bd">
+            已学习知识点数
+        </view>
+        <view class="weui-cell__ft">{{countLearntKP}}</view>
+    </view>
+</view>
+
+<view class="weui-cells__title">做题数据</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell" aria-role="option">
+        <view class="weui-cell__bd">
+            测验次数
+        </view>
+        <view class="weui-cell__ft">{{countExerciseSetCompleted}}</view>
+    </view>
+</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell" aria-role="option">
+        <view class="weui-cell__bd">
+            平均分
+        </view>
+        <view class="weui-cell__ft">{{count==0?'暂无':averageScore}}</view>
+    </view>
+</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell" aria-role="option">
+        <view class="weui-cell__bd">
+            平均正确率
+        </view>
+        <view class="weui-cell__ft">{{count==0?'暂无':averageCorrectRate}}</view>
+    </view>
+</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell" aria-role="option">
+        <view class="weui-cell__bd">
+            平均用时
+        </view>
+        <view class="weui-cell__ft">{{count==0?'暂无':averageTimeUsed}}</view>
+    </view>
+</view>
+<view class="weui-cells__title" wx:if="{{countExerciseSetCompleted!=0}}">雷达图</view>
+<view bindtap="openRadarChart" class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:if="{{countExerciseSetCompleted!=0}}">
+    <view class="weui-cell__bd">
+        <view>雷达图</view>
+    </view>
+    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+</view>
+
+<view class="button-sp-area">
+    <view class="weui-btn weui-btn_mini weui-btn_warn weui-wa-hotarea" aria-role="button" bindtap="logout">退出登录</view>
+</view>
+
+<view aria-role="dialog" aria-modal="true">
+    <view class="weui-mask weui-transition {{showRadarChart ? 'weui-transition_show' : ''}}" bindtap="closeRaderChart" aria-role="button" aria-label="关闭"></view>
+    <view class="weui-half-screen-dialog weui-half-screen-dialog_large weui-transition {{showRadarChart ? 'weui-transition_show' : ''}}">
+        <view class="weui-half-screen-dialog__hd">
+            <view class="weui-half-screen-dialog__hd__side" bindtap="closeRadarChart">
+                <view aria-role="button" class="weui-icon-btn">关闭<i class="weui-icon-close-thin"></i></view>
+            </view>
+        </view>
+        <view class='radar-container'>
+            <canvas class='radarCanvas' canvas-id='radarCanvas' style='width:360px;height:600rpx'></canvas>
+        </view>
+        <view class="weui-half-screen-dialog__ft">
+            <view class="weui-half-screen-dialog__btn-area">
+            <view aria-role="button" class="weui-btn weui-btn_primary" bindtap="closeRadarChart" style="top:100rpx">返回</view>
+            </view>
+        </view>
+    </view>
+</view>
