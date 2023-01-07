@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title></title>
+</head>
+<body>
+    <h1 th:text="${hot}">Hello World</h1>
+    <button onclick="doFunc">点菜</button>
+    <script>
+        function doFunc(){
+            $.ajax({
+                url: "update",
+                data: JSON.stringify(d),
+                //type、contentType必填,指明传参方式
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    //前端调用成功后，可以处理后端传回的json格式数据。
+                    if (response.success) {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
