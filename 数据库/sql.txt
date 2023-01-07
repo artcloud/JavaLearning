@@ -1,0 +1,168 @@
+create table exercise
+(
+eID int primary key,
+difficulty int,
+stem nvarchar(4000),
+moduleID int,
+ksID int,
+kpID int
+)
+
+create table choiceExercise
+(
+eID int primary key foreign key references exercise,
+eKey int
+)
+
+create table choiceExerciseOption
+(
+eID int foreign key references exercise,
+eOption nvarchar(255),
+eOptionNum int,
+primary key(eid,eoptionNum)
+)
+
+create table judgmentExercise
+(
+eID int primary key foreign key references exercise,
+eKey int
+)
+
+create table blankExercise
+(
+eID int primary key foreign key references exercise
+)
+
+create table blankExerciseBlank
+(
+eID int foreign key references blankExercise,
+blankPosition int,
+blankKey nvarchar(255)
+primary key(eID,blankPosition)
+)
+
+create table module
+(
+moduleID int primary key,
+moduleName nvarchar(255)
+)
+
+create table moduleDependency
+(
+moduleID int foreign key references module,
+dependency int,
+primary key(moduleID,dependency)
+)
+
+create table knowledgeSet
+(
+moduleID int foreign key references module,
+ksID int,
+ksName nvarchar(255)
+primary key(moduleID,ksID)
+)
+
+create table knowledgePoint
+(
+moduleID int,
+ksID int,
+kpID int,
+kpName nvarchar(255),
+content text,
+foreign key(moduleID,ksID) references knowledgeSet,
+primary key(moduleId,ksID,kpID)
+)
+
+create table exerciseRelatedKnowledgePoint
+(
+eID int foreign key references exercise,
+moduleID int,
+ksID int,
+kpID int,
+primary key(eID,moduleID,ksID,kpID)
+)
+
+create table finishedModule
+(
+student_ID nvarchar(20) foreign key references student ,
+moduleID int foreign key references module,
+primary key(student_ID,moduleID)
+)
+
+create table student
+(
+student_ID nvarchar(20) primary key,
+student_name nvarchar(20),
+student_password nvarchar(20)
+)
+
+create table learntKnowledgePoint
+(
+student_ID nvarchar(20) foreign key references student,
+moduleID int,
+ksID int,
+kpID int,
+foreign key (moduleID,ksID,kpID) references knowledgePoint,
+primary key (student_ID,moduleID,ksID,kpID)
+)
+
+create table completedExerciseSetRecord
+(
+student_ID nvarchar(20) foreign key references student,
+esType nvarchar(20) not NULL check (esType in ('moduleExercise','examination')),
+moduleID int foreign key references module,
+timeSubmit nvarchar(255) not NULL,
+totalTimeUsed nvarchar(255) not NULL,
+score float,
+correctRate float,
+primary key(student_ID,timeSubmit)
+)
+
+create table completedChoiceExerciseRecord
+(
+student_ID nvarchar(20),
+timeSubmit nvarchar(255) not NULL,
+foreign key (student_ID,timeSubmit) references completedExerciseSetRecord,
+eID int foreign key references choiceExercise,
+timeUsed nvarchar(255),
+answer int,
+score float,
+primary key(student_ID,timeSubmit,eID)
+)
+
+create table completedJudgmentExerciseRecord
+(
+student_ID nvarchar(20),
+timeSubmit nvarchar(255) not NULL,
+foreign key (student_ID,timeSubmit) references completedExerciseSetRecord,
+eID int foreign key references judgmentExercise,
+timeUsed nvarchar(255),
+answer int,
+score float,
+primary key(student_ID,timeSubmit,eID)
+)
+
+create table completedBlankExerciseRecord
+(
+student_ID nvarchar(20),
+timeSubmit nvarchar(255) not NULL,
+foreign key (student_ID,timeSubmit) references completedExerciseSetRecord,
+eID int foreign key references blankExercise,
+timeUsed nvarchar(255),
+score float,
+primary key(student_ID,timeSubmit,eID)
+)
+
+create table completedBlankExerciseBlankRecord
+(
+student_ID nvarchar(20),
+timeSubmit nvarchar(255) not NULL,
+eID int,
+foreign key (student_ID,timeSubmit,eID) references completedBlankExerciseRecord,
+blankPosition int,
+blankAnswer nvarchar(255),
+foreign key (eID,blankPosition) references blankExerciseBlank,
+primary key(student_ID,timeSubmit,eID,blankPosition)
+)
+
+
